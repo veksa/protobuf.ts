@@ -45,6 +45,7 @@
     "no-use-before-define": "off",
     "no-continue": "off",
     "no-plusplus": "off",
+    "arrow-parens": "off",
     "linebreak-style": [
       "error",
       "windows"
