@@ -1,0 +1,24 @@
+{
+  "name": "@protobuf.ts/generator",
+  "version": "0.0.1",
+  "description": "Protocol Buffers Generator for TypeScript.",
+  "author": "Alex Khizhnyi <admin@devblog.pro>",
+  "license": "BSD-3-Clause",
+  "homepage": "https://github.com/veksa/protobuf.ts",
+  "bugs": "https://github.com/veksa/protobuf.ts/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/veksa/protobuf.ts.git",
+    "directory": "packages/generator"
+  },
+  "keywords": [
+    "protobuf",
+    "protocol-buffers",
+    "typescript",
+    "generator"
+  ],
+  "devDependencies": {
+  },
+  "dependencies": {
+  }
+}

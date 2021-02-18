@@ -1,4 +1,7 @@
 ## Directory-based project format:
 .idea/
 
+coverage/
 node_modules/
+
+yarn-error.log

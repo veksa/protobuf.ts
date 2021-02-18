@@ -1,0 +1,26 @@
+{
+  "name": "@protobuf.ts/codec",
+  "version": "0.0.1",
+  "description": "Protocol Buffers Codec for TypeScript.",
+  "author": "Alex Khizhnyi <admin@devblog.pro>",
+  "license": "BSD-3-Clause",
+  "homepage": "https://github.com/veksa/protobuf.ts",
+  "bugs": "https://github.com/veksa/protobuf.ts/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/veksa/protobuf.ts.git",
+    "directory": "packages/codec"
+  },
+  "keywords": [
+    "protobuf",
+    "protocol-buffers",
+    "typescript",
+    "encoder",
+    "decoder",
+    "codec"
+  ],
+  "devDependencies": {
+  },
+  "dependencies": {
+  }
+}
