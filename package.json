@@ -1,0 +1,35 @@
+{
+  "name": "protobuf.ts",
+  "version": "0.0.1",
+  "description": "Protocol Buffers Generator and Codec for TypeScript.",
+  "author": "Alex Khizhnyi <admin@devblog.pro>",
+  "license": "BSD-3-Clause",
+  "repository": "veksa/protobuf.ts",
+  "bugs": "https://github.com/veksa/protobuf.ts/issues",
+  "homepage": "https://github.com/veksa/protobuf.ts",
+  "keywords": [
+    "protobuf",
+    "protocol-buffers",
+    "typescript",
+    "generator",
+    "encoder",
+    "decoder",
+    "codec"
+  ],
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "compile": "tsc --noEmit",
+    "lint": "eslint --ext .js,.ts,.tsx .",
+    "test": "jest",
+    "deduplicate": "yarn-deduplicate yarn.lock"
+  },
+  "devDependencies": {
+    "typescript": "4.1.5",
+    "eslint": "7.20.0",
+    "jest": "26.6.3",
+    "yarn-deduplicate": "3.1.0"
+  },
+  "dependencies": {
+  }
+}
