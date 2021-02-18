@@ -1,0 +1,36 @@
+{
+  "name": "enum value",
+  "message": [
+    [
+      "Token \"AAA\" not equal \"=\"",
+      1
+    ],
+    [
+      "Token \"=\" not equal \"number\"",
+      2
+    ],
+    [
+      "Token \"1\" not equal \";,[\"",
+      3
+    ],
+    [
+      "\r, AAA, =, 1, ;",
+      0
+    ]
+  ],
+  "line": 1,
+  "column": 3,
+  "range": [
+    "\r",
+    "AAA",
+    "=",
+    "1",
+    ";",
+    "...",
+    "1",
+    ";",
+    "\r",
+    "//",
+    "}\r"
+  ]
+}

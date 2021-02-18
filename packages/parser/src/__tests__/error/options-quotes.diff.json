@@ -1,0 +1,24 @@
+{
+  "name": "field",
+  "message": [
+    [
+      "Unexpected token in message field: type",
+      0
+    ]
+  ],
+  "line": 2,
+  "column": 10,
+  "range": [
+    "type",
+    "=",
+    "2",
+    "[",
+    "mylist",
+    "...",
+    "]",
+    ";",
+    "\r",
+    "}",
+    "\r"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "field",
+  "message": [
+    [
+      "Unexpected token in message field: int32",
+      0
+    ]
+  ],
+  "line": 2,
+  "column": 12,
+  "range": [
+    "int32",
+    "field1",
+    "=",
+    "1",
+    ";",
+    "...",
+    "102",
+    ";",
+    "\r",
+    "}",
+    "\r"
+  ]
+}

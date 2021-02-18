@@ -6,6 +6,8 @@
   "license": "BSD-3-Clause",
   "homepage": "https://github.com/veksa/protobuf.ts",
   "bugs": "https://github.com/veksa/protobuf.ts/issues",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/veksa/protobuf.ts.git",

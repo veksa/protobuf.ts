@@ -15,32 +15,44 @@
     "jest"
   ],
   "extends": [
+    "airbnb-typescript",
     "plugin:@typescript-eslint/recommended",
-    "airbnb"
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
   ],
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".ts", ".tsx"]
+        "extensions": [
+          ".ts",
+          ".tsx"
+        ]
       }
     }
   },
   "rules": {
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/indent": "off",
     "import/extensions": "off",
-    "object-curly-spacing": "off",
-    "object-curly-newline": "off",
+    "@typescript-eslint/object-curly-spacing": "off",
+    "@typescript-eslint/object-curly-newline": "off",
     "import/prefer-default-export": "off",
     "explicit-module-boundary-types": "off",
     "no-use-before-define": "off",
-    "indent": "off",
     "no-continue": "off",
     "no-plusplus": "off",
-
-    "linebreak-style": ["error", "windows"],
-    "new-cap": ["error", {
-      "capIsNew": true
-    }],
-    "arrow-body-style": ["error", "always"]
+    "linebreak-style": [
+      "error",
+      "windows"
+    ],
+    "new-cap": [
+      "error",
+      {
+        "capIsNew": true
+      }
+    ],
+    "arrow-body-style": [
+      "error",
+      "always"
+    ]
   }
 }

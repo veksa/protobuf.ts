@@ -1,0 +1,24 @@
+{
+  "name": "rpc",
+  "message": [
+    [
+      "Unexpected token in service: \r",
+      0
+    ]
+  ],
+  "line": 1,
+  "column": 23,
+  "range": [
+    "\r",
+    "rpc",
+    "SayHello",
+    "(",
+    "HelloRequest",
+    "...",
+    "{",
+    "{",
+    "{",
+    "}",
+    "\r"
+  ]
+}

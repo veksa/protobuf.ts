@@ -1,0 +1,19 @@
+{
+  "name": "common",
+  "message": [
+    [
+      "Unexpected token: \r",
+      0
+    ]
+  ],
+  "line": 1,
+  "column": 38,
+  "range": [
+    "\r",
+    "syntax",
+    "=",
+    "\"proto3\"",
+    ";",
+    "\r"
+  ]
+}
