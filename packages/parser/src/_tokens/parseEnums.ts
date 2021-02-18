@@ -2,28 +2,9 @@ import {next, setComment, writeComment} from '../_helpers/comment';
 import {Thrower} from '../_helpers/thrower';
 import {Enum} from '../parser.interface';
 import {ch, check, cut, insertOption, semicolon} from '../_helpers/utils';
-import {isNumber, isText} from '../_helpers/validators';
-import {parseInnerOptions, parseOptions} from './options';
-
-export function parseEnumVal(tokens: string[]) {
-    const {results} = check({
-        type: 'enum value',
-        tokens: tokens.slice(0, 4).concat(tokens[tokens.indexOf(';')]),
-        rules: [ch(isText, {result: true}), ch('='), ch(isNumber, {result: true}), ch([';', '[']), ch([';'])],
-    });
-
-    cut(tokens, 3);
-    const options = tokens[0] === '[' ? parseInnerOptions(tokens) : {};
-    cut(tokens, 1);
-
-    return {
-        name: results[0],
-        value: {
-            value: Number(results[1]),
-            options,
-        },
-    };
-}
+import {isText} from '../_helpers/validators';
+import {parseOptions} from './parseOptions';
+import {parseEnumVal} from './parseEnumVal';
 
 export function parseEnums(tokens: string[]) {
     const {results} = check({

@@ -1,4 +1,4 @@
-import {parseReserved} from '../reserved';
+import {parseReserved} from '../parseReserved';
 import {Thrower} from '../../_helpers/thrower';
 
 describe('Reserved', () => {

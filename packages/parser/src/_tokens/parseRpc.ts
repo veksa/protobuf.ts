@@ -3,7 +3,7 @@ import {Thrower} from '../_helpers/thrower';
 import {Method} from '../parser.interface';
 import {ch, check, cut, insertOption, semicolon} from '../_helpers/utils';
 import {isText} from '../_helpers/validators';
-import {parseOptions} from './options';
+import {parseOptions} from './parseOptions';
 
 export function parseRPC(tokens: string[]) {
     const {results, len} = check({

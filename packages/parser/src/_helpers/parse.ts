@@ -1,15 +1,16 @@
 import {Schema} from '../parser.interface';
 import {cleanComment, next, setComment} from './comment';
 import {Thrower} from './thrower';
-import {parseSyntax} from '../_tokens/syntax';
-import {parsePackage} from '../_tokens/package';
-import {parseExtend, parseMessage} from '../_tokens/message';
-import {parseImport} from '../_tokens/import';
-import {parseEnums} from '../_tokens/enums';
-import {parseOptions} from '../_tokens/options';
+import {parseSyntax} from '../_tokens/parseSyntax';
+import {parsePackage} from '../_tokens/parsePackage';
+import {parseImport} from '../_tokens/parseImport';
+import {parseEnums} from '../_tokens/parseEnums';
 import {insertOption} from './utils';
-import {parseService} from '../_tokens/service';
+import {parseService} from '../_tokens/parseService';
 import {extend} from './extend';
+import {parseMessage} from '../_tokens/parseMessage';
+import {parseOptions} from '../_tokens/parseOptions';
+import {parseExtend} from '../_tokens/parseExtend';
 
 export function parse(tokens: string[]) {
     const schema: Schema = {

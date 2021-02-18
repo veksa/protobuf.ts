@@ -1,5 +1,5 @@
 import {Thrower} from '../../_helpers/thrower';
-import {parseField} from '../field';
+import {parseField} from '../parseField';
 
 describe('parseField', () => {
     test('Field empty', () => {

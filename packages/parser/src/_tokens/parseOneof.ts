@@ -3,7 +3,7 @@ import {Thrower} from '../_helpers/thrower';
 import {Field} from '../parser.interface';
 import {ch, check, cut} from '../_helpers/utils';
 import {isText} from '../_helpers/validators';
-import {parseField} from './field';
+import {parseField} from './parseField';
 
 export function parseOneOf(tokens: string[]) {
     const fields: Field[] = [];

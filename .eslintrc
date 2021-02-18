@@ -27,6 +27,9 @@
           ".tsx"
         ]
       }
+    },
+    "react": {
+      "version": "latest"
     }
   },
   "rules": {
@@ -34,7 +37,9 @@
     "@typescript-eslint/indent": "off",
     "import/extensions": "off",
     "@typescript-eslint/object-curly-spacing": "off",
+    "object-curly-spacing": "off",
     "@typescript-eslint/object-curly-newline": "off",
+    "object-curly-newline": "off",
     "import/prefer-default-export": "off",
     "explicit-module-boundary-types": "off",
     "no-use-before-define": "off",

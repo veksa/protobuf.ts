@@ -1,5 +1,5 @@
-import {parseOptionArray} from '../options';
 import {Thrower} from '../../_helpers/thrower';
+import {parseOptionArray} from '../parseOptionArray';
 
 describe('parseOptionArray', () => {
     test('Options array', () => {

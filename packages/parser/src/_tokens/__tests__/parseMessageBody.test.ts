@@ -1,5 +1,5 @@
 import {Thrower} from '../../_helpers/thrower';
-import {parseMessageBody} from '../message';
+import {parseMessageBody} from '../parseMessageBody';
 
 describe('parseMessageBody', () => {
     test('Message empty', () => {

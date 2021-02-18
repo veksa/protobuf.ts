@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "compile": "tsc --noEmit",
-    "lint": "eslint",
+    "lint": "eslint .",
     "test": "jest",
     "coverage": "yarn test --coverage",
     "deduplicate": "yarn-deduplicate yarn.lock"

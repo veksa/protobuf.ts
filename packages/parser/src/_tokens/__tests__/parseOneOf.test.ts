@@ -1,4 +1,4 @@
-import {parseOneOf} from '../oneof';
+import {parseOneOf} from '../parseOneof';
 import {Thrower} from '../../_helpers/thrower';
 
 describe('parseOneOf', () => {

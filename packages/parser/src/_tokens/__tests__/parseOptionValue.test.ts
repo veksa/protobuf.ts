@@ -1,5 +1,5 @@
-import {parseOptionValue} from '../options';
 import {Thrower} from '../../_helpers/thrower';
+import {parseOptionValue} from '../parseOptionValue';
 
 describe('parseOptionValue', () => {
     test('Options value', () => {

@@ -1,5 +1,5 @@
 import {Thrower} from '../../_helpers/thrower';
-import {parseReservedItem} from '../reserved';
+import {parseReservedItem} from '../parseReservedItem';
 
 describe('parseReservedItem', () => {
     test('Reserved item', () => {

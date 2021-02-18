@@ -1,7 +1,7 @@
 import {Thrower} from '../../_helpers/thrower';
-import {parseRPC} from '../rpc';
+import {parseRPC} from '../parseRpc';
 
-describe('Rpc', () => {
+describe('parseRPC', () => {
     test('Rpc empty', () => {
         let i = 0;
 
@@ -11,9 +11,9 @@ describe('Rpc', () => {
                     const text = i < 4 ? '}' : '//';
                     i++;
                     return text;
-                } else {
-                    return target[prop];
                 }
+
+                return target[prop];
             },
         });
 

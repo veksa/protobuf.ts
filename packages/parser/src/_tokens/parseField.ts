@@ -1,8 +1,8 @@
 import {next, setComment, writeComment} from '../_helpers/comment';
 import {Thrower} from '../_helpers/thrower';
 import {Field} from '../parser.interface';
-import {parseMap} from './map';
-import {parseInnerOptions} from './options';
+import {parseMap} from './parseMap';
+import {parseInnerOptions} from './parseInnerOptions';
 
 export function parseField(tokens: string[], empty = false) {
     const field: Field = {

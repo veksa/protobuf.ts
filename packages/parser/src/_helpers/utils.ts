@@ -18,7 +18,12 @@ type CheckConfig = {
     result?: boolean;
 };
 
-export const ch = (rule: Validator | Validator[], config?: CheckConfig) => ({rule, config});
+export const ch = (rule: Validator | Validator[], config?: CheckConfig) => {
+    return {
+        rule,
+        config,
+    };
+};
 
 type Checks = ReturnType<typeof ch>;
 

@@ -1,8 +1,8 @@
 import {Thrower} from '../../_helpers/thrower';
-import {parseInnerOptions} from '../options';
+import {parseInnerOptions} from '../parseInnerOptions';
 
 describe('parseInnerOptions', () => {
-    it('Options inner', () => {
+    test('Options inner', () => {
         try {
             parseInnerOptions(['//', 'comment']);
         } catch (e) {
