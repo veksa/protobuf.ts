@@ -1,4 +1,4 @@
-import {SYMBOLS} from './tokenizer';
+import {SYMBOLS} from '../tokenizer/tokenizer';
 import {cutStr} from './utils';
 
 export function isStr(str?: unknown): str is string {

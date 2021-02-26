@@ -1,37 +1,11 @@
-enum Block {
-    none,
-    comment,
-    commentMulti,
-    oneString,
-    twoString,
-}
+import {Block} from './tokenizer.interface';
+import {Empty, Symbol} from './tokenizer.constant';
 
-const EMPTY: Record<string, boolean> = {
-    ' ': true,
-    '\t': true,
-    '\n': true,
-};
-
-export const SYMBOLS: Record<string, boolean> = {
-    '=': true,
-    ',': true,
-    ':': true,
-    ';': true,
-    '[': true,
-    ']': true,
-    '(': true,
-    ')': true,
-    '{': true,
-    '}': true,
-    '<': true,
-    '>': true,
-};
-
-// eslint-disable-next-line complexity
 export function tokenizer(source: string) {
     const tokens: string[] = [];
     const lines: number[] = [];
     const columns: number[] = [];
+
     let tmp = '';
     let block: Block = Block.none;
     let sameLine = true;
@@ -67,7 +41,7 @@ export function tokenizer(source: string) {
                 break;
 
             case block === Block.none && cur + next === '/*':
-                block = Block.commentMulti;
+                block = Block.multiComment;
                 finalize();
                 tmp = '/*';
                 finalize(true);
@@ -75,7 +49,7 @@ export function tokenizer(source: string) {
                 column++;
                 break;
 
-            case block === Block.commentMulti && cur + next === '*/':
+            case block === Block.multiComment && cur + next === '*/':
                 block = Block.none;
                 finalize(false, true);
                 tmp = '*/';
@@ -87,15 +61,15 @@ export function tokenizer(source: string) {
             case block === Block.none && cur === '\'':
                 finalize();
                 tmp = cur;
-                block = Block.oneString;
+                block = Block.singleQuoteString;
                 break;
 
-            case block === Block.oneString && cur + next === '\\\'':
+            case block === Block.singleQuoteString && cur + next === '\\\'':
                 tmp += '\'';
                 i++;
                 break;
 
-            case block === Block.oneString && cur === '\'':
+            case block === Block.singleQuoteString && cur === '\'':
                 tmp += cur;
                 finalize();
                 block = Block.none;
@@ -104,27 +78,27 @@ export function tokenizer(source: string) {
             case block === Block.none && cur === '"':
                 finalize();
                 tmp = cur;
-                block = Block.twoString;
+                block = Block.doubleQuoteString;
                 break;
 
-            case block === Block.twoString && cur + next === '\\"':
+            case block === Block.doubleQuoteString && cur + next === '\\"':
                 tmp += '"';
                 i++;
                 break;
 
-            case block === Block.twoString && cur === '"':
+            case block === Block.doubleQuoteString && cur === '"':
                 tmp += cur;
                 finalize();
                 block = Block.none;
                 break;
 
-            case block === Block.none && SYMBOLS[cur]:
+            case block === Block.none && Symbol[cur]:
                 finalize();
                 tmp = cur;
                 finalize(true);
                 break;
 
-            case block === Block.none && EMPTY[cur]:
+            case block === Block.none && Empty[cur]:
                 finalize();
                 break;
 
@@ -141,7 +115,7 @@ export function tokenizer(source: string) {
         if (cur === '\n') {
             sameLine = false;
             curLine++;
-        } else if (!EMPTY[cur]) {
+        } else if (!Empty[cur]) {
             sameLine = true;
         }
     }
