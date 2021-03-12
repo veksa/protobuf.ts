@@ -4,22 +4,22 @@ import {Block, IToken} from './tokenizer.interface';
 export function tokenizer(source: string): IToken[] {
     const tokenList: IToken[] = [];
 
-    let token = '';
+    let text = '';
     let block: Block = Block.none;
     let line = 1;
     let column = 1;
     let isSameLine = true;
 
     const finalize = (after = false, force = false) => {
-        if (token.length > 0 || force) {
+        if (text.length > 0 || force) {
             tokenList.push({
-                token,
+                text,
                 line,
                 column: after
                     ? column
-                    : column - token.length,
+                    : column - text.length,
             });
-            token = '';
+            text = '';
         }
     };
 
@@ -30,7 +30,7 @@ export function tokenizer(source: string): IToken[] {
         if (block === Block.none && cur + next === '//') {
             finalize();
             block = Block.comment;
-            token += isSameLine ? '!//' : '//';
+            text += isSameLine ? '!//' : '//';
             finalize(true);
             i++;
             column++;
@@ -40,47 +40,47 @@ export function tokenizer(source: string): IToken[] {
         } else if (block === Block.none && cur + next === '/*') {
             block = Block.multiComment;
             finalize();
-            token = '/*';
+            text = '/*';
             finalize(true);
             i++;
             column++;
         } else if (block === Block.multiComment && cur + next === '*/') {
             block = Block.none;
             finalize(false, true);
-            token = '*/';
+            text = '*/';
             finalize(true);
             i++;
             column++;
         } else if (block === Block.none && cur === '\'') {
             finalize();
-            token = cur;
+            text = cur;
             block = Block.singleQuoteString;
         } else if (block === Block.singleQuoteString && cur + next === '\\\'') {
-            token += '\'';
+            text += '\'';
             i++;
         } else if (block === Block.singleQuoteString && cur === '\'') {
-            token += cur;
+            text += cur;
             finalize();
             block = Block.none;
         } else if (block === Block.none && cur === '"') {
             finalize();
-            token = cur;
+            text = cur;
             block = Block.doubleQuoteString;
         } else if (block === Block.doubleQuoteString && cur + next === '\\"') {
-            token += '"';
+            text += '"';
             i++;
         } else if (block === Block.doubleQuoteString && cur === '"') {
-            token += cur;
+            text += cur;
             finalize();
             block = Block.none;
         } else if (block === Block.none && Symbol[cur]) {
             finalize();
-            token = cur;
+            text = cur;
             finalize(true);
         } else if (block === Block.none && Empty[cur]) {
             finalize();
         } else {
-            token += cur;
+            text += cur;
         }
 
         if (block === Block.none && cur === '\n') {

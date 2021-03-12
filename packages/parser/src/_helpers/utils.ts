@@ -1,4 +1,5 @@
 import {isPresent, isString, isText} from '@protobuf.ts/typeguard';
+import {IToken} from '@protobuf.ts/tokenizer';
 import {Thrower} from './thrower';
 import {Option, Options} from '../parser.interface';
 
@@ -27,40 +28,43 @@ export const ch = (rule: Validator | Validator[], config?: CheckConfig) => {
 
 type Checks = ReturnType<typeof ch>;
 
-type Config = {
+interface ICheckParams {
     type?: string;
     rules: Checks[];
-    tokens: Tokens;
-};
+    tokenList: IToken[];
+}
 
-export type Tokens = (string | undefined)[];
+export function check(params: ICheckParams) {
+    const {type, rules, tokenList} = params;
 
-export function check({type, rules, tokens}: Config) {
     const errors: [string, number][] = [];
     const results: string[] = [];
-    const range: Tokens = tokens.slice(0, rules.length);
-    let iToken = 0;
+    const range: IToken[] = tokenList.slice(0, rules.length);
+
+    let len = 0;
 
     for (let i = 0; i < rules.length; i++) {
         const {rule, config} = rules[i];
         const val = Array.isArray(rule) ? rule : [rule];
-        const token = tokens[config?.strict === true ? i : iToken] ?? '';
+        const token = tokenList[config?.strict === true ? i : len] ?? '';
         let valid = false;
 
         for (const validator of val) {
             if (!valid) {
-                valid = typeof validator === 'function' ? validator(token) : token === validator;
+                valid = typeof validator === 'function'
+                    ? validator(token.text)
+                    : token.text === validator;
             }
         }
 
         if (config?.result === true) {
-            results.push(valid ? token : '');
+            results.push(valid ? token.text : '');
         }
         if (!valid && config?.ignore !== true) {
-            errors.push([`Token "${token}" not equal "${val.join(',')}"`, i]);
+            errors.push([`Token "${token.text}" not equal "${val.join(',')}"`, i]);
         }
         if (valid || (!valid && config?.ignore !== true)) {
-            iToken++;
+            len++;
         }
     }
 
@@ -69,12 +73,17 @@ export function check({type, rules, tokens}: Config) {
         throw new Thrower(type, errors);
     }
 
-    return {errors, results, range, len: iToken};
+    return {
+        errors,
+        results,
+        range,
+        len,
+    };
 }
 
-export const semicolon = (tokens: string[]) => {
-    if (tokens[0] === ';') {
-        tokens.shift();
+export const semicolon = (tokenList: IToken[]) => {
+    if (tokenList[0].text === ';') {
+        tokenList.shift();
     }
 };
 

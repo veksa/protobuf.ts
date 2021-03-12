@@ -1,3 +1,4 @@
+import {IToken} from '@protobuf.ts/tokenizer';
 import {next, setComment, writeComment} from '../_helpers/comment';
 import {Thrower} from '../_helpers/thrower';
 import {Method} from '../parser.interface';
@@ -5,10 +6,10 @@ import {ch, check, cut, insertOption, semicolon} from '../_helpers/utils';
 import {isText} from '../_helpers/validators';
 import {parseOptions} from './parseOptions';
 
-export function parseRPC(tokens: string[]) {
+export function parseRPC(tokenList: IToken[]) {
     const {results, len} = check({
         type: 'rpc',
-        tokens,
+        tokenList,
         rules: [
             ch('rpc'),
             ch(isText, {result: true}),
@@ -24,7 +25,7 @@ export function parseRPC(tokens: string[]) {
         ],
     });
 
-    cut(tokens, len);
+    cut(tokenList, len);
 
     const rpc: Method = {
         name: results[0],
@@ -37,29 +38,33 @@ export function parseRPC(tokens: string[]) {
 
     setComment(rpc);
 
-    if (tokens[0] === ';') {
-        tokens.shift();
+    if (tokenList[0].text === ';') {
+        tokenList.shift();
         return rpc;
     }
 
+    const parenthesisToken = tokenList.find(token => {
+        return token.text === '}';
+    });
+
     check({
         type: 'rpc',
-        tokens: [tokens[0], tokens[tokens.indexOf('}')]],
+        tokenList: [tokenList[0], parenthesisToken],
         rules: [ch('{'), ch('}')],
     });
 
-    tokens.shift();
+    tokenList.shift();
 
-    while (tokens.length > 0) {
-        switch (next(tokens)) {
+    while (tokenList.length > 0) {
+        switch (next(tokenList)) {
             case '}':
-                cut(tokens, 1);
-                semicolon(tokens);
+                cut(tokenList, 1);
+                semicolon(tokenList);
                 writeComment(rpc);
                 return rpc;
 
             case 'option': {
-                const {field, value} = parseOptions(tokens);
+                const {field, value} = parseOptions(tokenList);
                 insertOption(rpc.options, field, value);
                 break;
             }
@@ -68,7 +73,7 @@ export function parseRPC(tokens: string[]) {
                 continue;
 
             default:
-                throw new Thrower('rpc', [[`Unexpected token "${tokens[0]}"`, 0]]);
+                throw new Thrower('rpc', [[`Unexpected token "${tokenList[0].text}"`, 0]]);
         }
     }
 

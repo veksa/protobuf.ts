@@ -1,8 +1,9 @@
+import {IToken} from '@protobuf.ts/tokenizer';
 import {parseMessage} from './parseMessage';
 
-export function parseExtend(tokens: string[]) {
+export function parseExtend(tokenList: IToken[]) {
     return {
-        name: tokens[1],
-        message: parseMessage(tokens),
+        name: tokenList[1].text,
+        message: parseMessage(tokenList),
     };
 }

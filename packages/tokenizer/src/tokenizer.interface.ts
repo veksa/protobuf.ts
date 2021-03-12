@@ -7,7 +7,7 @@ export enum Block {
 }
 
 export interface IToken {
-    token: string;
+    text: string;
     line: number;
     column: number;
 }

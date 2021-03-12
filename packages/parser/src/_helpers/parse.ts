@@ -1,3 +1,4 @@
+import {IToken} from '@protobuf.ts/tokenizer';
 import {Schema} from '../parser.interface';
 import {cleanComment, next, setComment} from './comment';
 import {Thrower} from './thrower';
@@ -12,7 +13,7 @@ import {parseMessage} from '../_tokens/parseMessage';
 import {parseOptions} from '../_tokens/parseOptions';
 import {parseExtend} from '../_tokens/parseExtend';
 
-export function parse(tokens: string[]) {
+export function parse(tokenList: IToken[]) {
     const schema: Schema = {
         syntax: 3,
         imports: [],
@@ -28,47 +29,47 @@ export function parse(tokens: string[]) {
 
     let first = true;
 
-    while (tokens.length > 0) {
-        switch (next(tokens)) {
+    while (tokenList.length > 0) {
+        switch (next(tokenList)) {
             case 'syntax':
                 if (!first) {
                     throw new Thrower('syntax', [['must be on first line', 0]]);
                 }
-                schema.syntax = parseSyntax(tokens);
+                schema.syntax = parseSyntax(tokenList);
                 break;
 
             case 'package':
-                schema.package = parsePackage(tokens);
+                schema.package = parsePackage(tokenList);
                 break;
 
             case 'message':
-                schema.messages.push(parseMessage(tokens));
+                schema.messages.push(parseMessage(tokenList));
                 break;
 
             case 'import':
-                schema.imports.push(parseImport(tokens));
+                schema.imports.push(parseImport(tokenList));
                 break;
 
             case 'enum':
-                schema.enums.push(parseEnums(tokens));
+                schema.enums.push(parseEnums(tokenList));
                 break;
 
             case 'option': {
-                const {field, value} = parseOptions(tokens);
+                const {field, value} = parseOptions(tokenList);
                 insertOption(schema.options, field, value);
                 break;
             }
 
             case 'extend':
-                schema.extends.push(parseExtend(tokens));
+                schema.extends.push(parseExtend(tokenList));
                 break;
 
             case 'service':
-                schema.services.push(parseService(tokens));
+                schema.services.push(parseService(tokenList));
                 break;
 
             default:
-                throw new Thrower('common', [[`Unexpected token: ${tokens[0]}`, 0]]);
+                throw new Thrower('common', [[`Unexpected token: ${tokenList[0].text}`, 0]]);
         }
         first = false;
     }

@@ -1,17 +1,24 @@
-import {ch, check, cut} from '../_helpers/utils';
+import {IToken} from '@protobuf.ts/tokenizer';
+import {ch, check} from '../_helpers/utils';
 import {isNumber, isText} from '../_helpers/validators';
 import {parseInnerOptions} from './parseInnerOptions';
 
-export function parseEnumVal(tokens: string[]) {
+export function parseEnumVal(tokenList: IToken[]) {
+    const parenthesisToken = tokenList.find(token => {
+        return token.text === '}';
+    });
+
     const {results} = check({
         type: 'enum value',
-        tokens: tokens.slice(0, 4).concat(tokens[tokens.indexOf(';')]),
+        tokenList: [tokenList[0], tokenList[1], tokenList[2], tokenList[3], parenthesisToken],
         rules: [ch(isText, {result: true}), ch('='), ch(isNumber, {result: true}), ch([';', '[']), ch([';'])],
     });
 
-    cut(tokens, 3);
-    const options = tokens[0] === '[' ? parseInnerOptions(tokens) : {};
-    cut(tokens, 1);
+    tokenList.splice(0, 3);
+
+    const options = tokenList[0].text === '[' ? parseInnerOptions(tokenList) : {};
+
+    tokenList.splice(0, 1);
 
     return {
         name: results[0],

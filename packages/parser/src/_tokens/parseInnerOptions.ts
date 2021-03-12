@@ -1,21 +1,22 @@
 import {isPresent} from '@protobuf.ts/typeguard';
+import {IToken} from '@protobuf.ts/tokenizer';
 import {Options} from '../parser.interface';
 import {next, setComment, writeComment} from '../_helpers/comment';
-import {cut, insertOption} from '../_helpers/utils';
+import {insertOption} from '../_helpers/utils';
 import {Thrower} from '../_helpers/thrower';
 import {parseOption} from './parseOption';
 
-export function parseInnerOptions(tokens: string[]) {
+export function parseInnerOptions(tokenList: IToken[]) {
     const options: Options = {};
 
     setComment(options);
 
-    while (tokens.length > 0) {
-        switch (next(tokens)) {
+    while (tokenList.length > 0) {
+        switch (next(tokenList)) {
             case '[':
             case ',': {
-                cut(tokens, 1);
-                const {field, value} = parseOption(tokens);
+                tokenList.splice(0, 1);
+                const {field, value} = parseOption(tokenList);
 
                 const path = field.split('.');
                 const lastFieldName = path.pop();
@@ -34,7 +35,7 @@ export function parseInnerOptions(tokens: string[]) {
             }
 
             case ']':
-                cut(tokens, 1);
+                tokenList.splice(0, 1);
                 writeComment(options);
                 return options;
 
@@ -42,7 +43,7 @@ export function parseInnerOptions(tokens: string[]) {
                 continue;
 
             default:
-                throw new Thrower('inner options', [[`Unexpected token "${tokens[0]}"`, 0]]);
+                throw new Thrower('inner options', [[`Unexpected token "${tokenList[0].text}"`, 0]]);
         }
     }
 

@@ -6,7 +6,7 @@ describe('check', () => {
         expect(
             check({
                 rules: [ch(isStr)],
-                tokens: ['abc'],
+                tokenList: ['abc'],
             }),
         ).toEqual({
             errors: [['Token "abc" not equal " string with quotes "..." or \'...\' "', 0]],
@@ -21,7 +21,7 @@ describe('check', () => {
             check({
                 rules: [ch('none', {ignore: true}), ch('123', {strict: true, result: true})],
                 // eslint-disable-next-line no-sparse-arrays
-                tokens: [, '123'],
+                tokenList: [, '123'],
             }),
         ).toEqual({
             errors: [],

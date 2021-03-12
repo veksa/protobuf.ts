@@ -1,3 +1,4 @@
+import {IToken} from '@protobuf.ts/tokenizer';
 import {Option, Options} from '../parser.interface';
 import {next} from '../_helpers/comment';
 import {cut, cutStr, insertOption} from '../_helpers/utils';
@@ -25,8 +26,8 @@ function parse(value?: string) {
     return value;
 }
 
-export function parseOptionValue(tokens: string[]): Option {
-    const value = tokens.shift();
+export function parseOptionValue(tokenList: IToken[]): Option {
+    const value = tokenList.shift();
 
     if (value !== '{') {
         return parse(value);
@@ -36,26 +37,32 @@ export function parseOptionValue(tokens: string[]): Option {
 
     let field: string | undefined;
 
-    while (tokens.length > 0) {
-        switch (next(tokens)) {
+    while (tokenList.length > 0) {
+        switch (next(tokenList)) {
             case '}':
-                cut(tokens, 1);
+                cut(tokenList, 1);
                 return result;
 
             case ':':
-                cut(tokens, 1);
-                insertOption(result, field, tokens[0] === '[' ? parseOptionArray(tokens) : parseOptionValue(tokens));
+                cut(tokenList, 1);
+                insertOption(
+                    result,
+                    field,
+                    tokenList[0] === '['
+                        ? parseOptionArray(tokenList)
+                        : parseOptionValue(tokenList),
+                );
                 break;
 
             case '{':
-                insertOption(result, field, parseOptionValue(tokens));
+                insertOption(result, field, parseOptionValue(tokenList));
                 break;
 
             case undefined:
                 continue;
 
             default:
-                field = tokens.shift();
+                field = tokenList.shift();
         }
     }
 

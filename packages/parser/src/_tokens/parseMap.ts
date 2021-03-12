@@ -1,10 +1,11 @@
+import {IToken} from '@protobuf.ts/tokenizer';
 import {ch, check, cut} from '../_helpers/utils';
 import {isText} from '../_helpers/validators';
 
-export function parseMap(tokens: string[]) {
+export function parseMap(tokenList: IToken[]) {
     const {len, results} = check({
         type: 'map',
-        tokens,
+        tokenList,
         rules: [
             ch('map'),
             ch('<'),
@@ -16,7 +17,7 @@ export function parseMap(tokens: string[]) {
         ],
     });
 
-    cut(tokens, len);
+    cut(tokenList, len);
 
     return {
         type: 'map',

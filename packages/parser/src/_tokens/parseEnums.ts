@@ -1,15 +1,20 @@
+import {IToken} from '@protobuf.ts/tokenizer';
 import {next, setComment, writeComment} from '../_helpers/comment';
 import {Thrower} from '../_helpers/thrower';
 import {Enum} from '../parser.interface';
-import {ch, check, cut, insertOption, semicolon} from '../_helpers/utils';
+import {ch, check, insertOption, semicolon} from '../_helpers/utils';
 import {isText} from '../_helpers/validators';
 import {parseOptions} from './parseOptions';
 import {parseEnumVal} from './parseEnumVal';
 
-export function parseEnums(tokens: string[]) {
+export function parseEnums(tokenList: IToken[]) {
+    const parenthesisToken = tokenList.find(token => {
+        return token.text === '}';
+    });
+
     const {results} = check({
         type: 'enum',
-        tokens: tokens.slice(0, 3).concat(tokens[tokens.indexOf('}')]),
+        tokenList: [tokenList[0], tokenList[1], tokenList[2], parenthesisToken],
         rules: [ch('enum'), ch(isText, {result: true}), ch('{'), ch('}')],
     });
 
@@ -21,18 +26,18 @@ export function parseEnums(tokens: string[]) {
 
     setComment(en);
 
-    cut(tokens, 3);
+    tokenList.splice(0, 3);
 
-    while (tokens.length > 0) {
-        switch (next(tokens)) {
+    while (tokenList.length > 0) {
+        switch (next(tokenList)) {
             case '}':
-                cut(tokens, 1);
-                semicolon(tokens);
+                tokenList.splice(0, 1);
+                semicolon(tokenList);
                 writeComment(en);
                 return en;
 
             case 'option': {
-                const {field, value} = parseOptions(tokens);
+                const {field, value} = parseOptions(tokenList);
                 insertOption(en.options, field, value);
                 break;
             }
@@ -41,7 +46,7 @@ export function parseEnums(tokens: string[]) {
                 continue;
 
             default: {
-                const {name, value} = parseEnumVal(tokens);
+                const {name, value} = parseEnumVal(tokenList);
                 en.values[name] = value;
                 writeComment(en.values[name]);
             }

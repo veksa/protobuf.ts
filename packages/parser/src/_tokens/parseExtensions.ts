@@ -1,10 +1,11 @@
-import {ch, check, cut} from '../_helpers/utils';
+import {IToken} from '@protobuf.ts/tokenizer';
+import {ch, check} from '../_helpers/utils';
 import {isNumber} from '../_helpers/validators';
 
-export function parseExtensions(tokens: string[]) {
+export function parseExtensions(tokenList: IToken[]) {
     const {results, len} = check({
         type: 'extensions',
-        tokens,
+        tokenList,
         rules: [
             ch('extensions'),
             ch(isNumber, {result: true}),
@@ -14,10 +15,10 @@ export function parseExtensions(tokens: string[]) {
         ],
     });
 
-    cut(tokens, len);
+    tokenList.splice(0, len);
 
     return {
         from: Number(results[0]),
-        to: results[1] === 'max' ? 0x1fffffff : Number(results[1])
+        to: results[1] === 'max' ? 0x1fffffff : Number(results[1]),
     };
 }

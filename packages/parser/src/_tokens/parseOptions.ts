@@ -1,14 +1,19 @@
+import {IToken} from '@protobuf.ts/tokenizer';
 import {ch, check, cut, semicolon} from '../_helpers/utils';
 import {parseOption} from './parseOption';
 
-export function parseOptions(tokens: string[]) {
-    const {len} = check({tokens, rules: [ch('option')], type: 'option'});
+export function parseOptions(tokenList: IToken[]) {
+    const {len} = check({
+        type: 'option',
+        tokenList,
+        rules: [ch('option')],
+    });
 
-    cut(tokens, len);
+    cut(tokenList, len);
 
-    const result = parseOption(tokens);
+    const result = parseOption(tokenList);
 
-    semicolon(tokens);
+    semicolon(tokenList);
 
     return result;
 }

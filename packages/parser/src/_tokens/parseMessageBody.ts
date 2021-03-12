@@ -11,8 +11,9 @@ import {parseExtend} from './parseExtend';
 import {parseMessage} from './parseMessage';
 import {checkReserved} from './checkReserved';
 import {parseOptions} from './parseOptions';
+import {IToken} from '../../../tokenizer';
 
-export function parseMessageBody(tokens: string[], name: string) {
+export function parseMessageBody(tokenList: IToken[], name: string) {
     const message: Message = {
         name,
         enums: [],
@@ -26,10 +27,10 @@ export function parseMessageBody(tokens: string[], name: string) {
 
     setComment(message);
 
-    while (tokens.length > 0) {
-        switch (next(tokens)) {
+    while (tokenList.length > 0) {
+        switch (next(tokenList)) {
             case '}':
-                tokens.shift();
+                tokenList.shift();
                 writeComment(message);
                 checkReserved(message);
                 return message;
@@ -38,39 +39,39 @@ export function parseMessageBody(tokens: string[], name: string) {
             case 'repeated':
             case 'optional':
             case 'required':
-                message.fields.push(parseField(tokens));
+                message.fields.push(parseField(tokenList));
                 break;
 
             case 'enum':
-                message.enums.push(parseEnums(tokens));
+                message.enums.push(parseEnums(tokenList));
                 break;
 
             case 'message':
-                message.messages.push(parseMessage(tokens));
+                message.messages.push(parseMessage(tokenList));
                 break;
 
             case 'extensions':
-                message.extensions.push(parseExtensions(tokens));
+                message.extensions.push(parseExtensions(tokenList));
                 break;
 
             case 'oneof':
-                message.fields = message.fields.concat(parseOneOf(tokens));
+                message.fields = message.fields.concat(parseOneOf(tokenList));
                 break;
 
             case 'extend':
-                message.extends.push(parseExtend(tokens));
+                message.extends.push(parseExtend(tokenList));
                 break;
 
             case ';':
-                tokens.shift();
+                tokenList.shift();
                 break;
 
             case 'reserved':
-                message.reserved.push(parseReserved(tokens));
+                message.reserved.push(parseReserved(tokenList));
                 break;
 
             case 'option': {
-                const {field, value} = parseOptions(tokens);
+                const {field, value} = parseOptions(tokenList);
                 insertOption(message.options, field, value);
                 break;
             }
@@ -79,7 +80,7 @@ export function parseMessageBody(tokens: string[], name: string) {
                 continue;
 
             default:
-                message.fields.push(parseField(tokens, true));
+                message.fields.push(parseField(tokenList, true));
         }
     }
 

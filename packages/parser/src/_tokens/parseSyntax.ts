@@ -1,14 +1,17 @@
+import {IToken} from '@protobuf.ts/tokenizer';
 import {ch, check, cut, cutStr} from '../_helpers/utils';
 import {isProto} from '../_helpers/validators';
 
-export function parseSyntax(tokens: string[]) {
+export function parseSyntax(tokenList: IToken[]) {
     const {range, len} = check({
         type: 'syntax',
-        tokens,
+        tokenList,
         rules: [ch('syntax'), ch('='), ch(isProto), ch(';')],
     });
 
-    cut(tokens, len);
+    cut(tokenList, len);
 
-    return cutStr(range[2]) === 'proto2' ? 2 : 3;
+    return cutStr(range[2].text) === 'proto2'
+        ? 2
+        : 3;
 }
