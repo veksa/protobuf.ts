@@ -1,4 +1,4 @@
-import {SYMBOLS} from '../tokenizer/tokenizer';
+import {Symbol} from '@protobuf.ts/tokenizer';
 import {cutStr} from './utils';
 
 export function isStr(str?: unknown): str is string {
@@ -12,7 +12,7 @@ isStr.toString = () => {
 };
 
 export function isText(str?: unknown): str is string {
-    return typeof str === 'string' && !SYMBOLS[str];
+    return typeof str === 'string' && !Symbol[str];
 }
 
 isText.toString = () => {

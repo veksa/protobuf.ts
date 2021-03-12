@@ -1,4 +1,4 @@
-import {tokenizer} from './tokenizer/tokenizer';
+import {tokenizer} from '@protobuf.ts/tokenizer';
 import {parse} from './_helpers/parse';
 
 export function parser(buf: string | Buffer) {

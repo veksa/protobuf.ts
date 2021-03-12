@@ -1,7 +1,7 @@
 {
-  "name": "@protobuf.ts/parser",
+  "name": "@protobuf.ts/tokenizer",
   "version": "0.0.1",
-  "description": "Protocol Buffers Parser for TypeScript.",
+  "description": "Protocol Buffers Tokenizer for TypeScript.",
   "author": "Alex Khizhnyi <admin@devblog.pro>",
   "license": "BSD-3-Clause",
   "homepage": "https://github.com/veksa/protobuf.ts",
@@ -11,18 +11,16 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/veksa/protobuf.ts.git",
-    "directory": "packages/parser"
+    "directory": "packages/tokenizer"
   },
   "keywords": [
     "protobuf",
     "protocol-buffers",
     "typescript",
-    "parser"
+    "tokenizer"
   ],
   "devDependencies": {
   },
   "dependencies": {
-    "@protobuf.ts/tokenizer": "*",
-    "@protobuf.ts/typeguard": "*"
   }
 }
