@@ -1,5 +1,5 @@
-import {Block} from './tokenizer.interface';
 import {Empty, Symbol} from './tokenizer.constant';
+import {Block} from './tokenizer.interface';
 
 export function tokenizer(source: string) {
     const tokens: string[] = [];

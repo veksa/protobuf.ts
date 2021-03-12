@@ -1,9 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`tokenizer should  1`] = `
+exports[`tokenizer should add comment line 1`] = `
 Object {
-  "columns": Array [],
-  "lines": Array [],
-  "tokens": Array [],
+  "columns": Array [
+    1,
+  ],
+  "lines": Array [
+    2,
+  ],
+  "tokens": Array [
+    "simple",
+  ],
 }
 `;

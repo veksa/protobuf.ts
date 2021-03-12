@@ -1,8 +1,12 @@
 import {tokenizer} from '../tokenizer';
 
 describe('tokenizer', () => {
-    test('should ', () => {
-        const actual = tokenizer('// test \n message');
+    test('should add comment line', () => {
+        const actual = tokenizer(
+`
+simple
+`
+        );
 
         expect(actual).toMatchSnapshot();
     });
