@@ -1,23 +1,25 @@
 import {Empty, Symbol} from './tokenizer.constant';
-import {Block} from './tokenizer.interface';
+import {Block, IToken} from './tokenizer.interface';
 
-export function tokenizer(source: string) {
-    const tokens: string[] = [];
-    const lines: number[] = [];
-    const columns: number[] = [];
+export function tokenizer(source: string): IToken[] {
+    const tokenList: IToken[] = [];
 
-    let tmp = '';
+    let token = '';
     let block: Block = Block.none;
-    let sameLine = true;
-    let curLine = 1;
+    let line = 1;
     let column = 1;
+    let isSameLine = true;
 
     const finalize = (after = false, force = false) => {
-        if (tmp.length > 0 || force) {
-            tokens.push(tmp);
-            lines.push(curLine);
-            columns.push(after ? column : column - tmp.length);
-            tmp = '';
+        if (token.length > 0 || force) {
+            tokenList.push({
+                token,
+                line,
+                column: after
+                    ? column
+                    : column - token.length,
+            });
+            token = '';
         }
     };
 
@@ -25,85 +27,60 @@ export function tokenizer(source: string) {
         const cur = source[i];
         const next = source[i + 1];
 
-        switch (true) {
-            case block === Block.none && cur + next === '//':
-                finalize();
-                block = Block.comment;
-                tmp += sameLine ? '!//' : '//';
-                finalize(true);
-                i++;
-                column++;
-                break;
-
-            case block === Block.comment && cur === '\n':
-                block = Block.none;
-                finalize(false, true);
-                break;
-
-            case block === Block.none && cur + next === '/*':
-                block = Block.multiComment;
-                finalize();
-                tmp = '/*';
-                finalize(true);
-                i++;
-                column++;
-                break;
-
-            case block === Block.multiComment && cur + next === '*/':
-                block = Block.none;
-                finalize(false, true);
-                tmp = '*/';
-                finalize(true);
-                i++;
-                column++;
-                break;
-
-            case block === Block.none && cur === '\'':
-                finalize();
-                tmp = cur;
-                block = Block.singleQuoteString;
-                break;
-
-            case block === Block.singleQuoteString && cur + next === '\\\'':
-                tmp += '\'';
-                i++;
-                break;
-
-            case block === Block.singleQuoteString && cur === '\'':
-                tmp += cur;
-                finalize();
-                block = Block.none;
-                break;
-
-            case block === Block.none && cur === '"':
-                finalize();
-                tmp = cur;
-                block = Block.doubleQuoteString;
-                break;
-
-            case block === Block.doubleQuoteString && cur + next === '\\"':
-                tmp += '"';
-                i++;
-                break;
-
-            case block === Block.doubleQuoteString && cur === '"':
-                tmp += cur;
-                finalize();
-                block = Block.none;
-                break;
-
-            case block === Block.none && Symbol[cur]:
-                finalize();
-                tmp = cur;
-                finalize(true);
-                break;
-
-            case block === Block.none && Empty[cur]:
-                finalize();
-                break;
-
-            default:
-                tmp += cur;
+        if (block === Block.none && cur + next === '//') {
+            finalize();
+            block = Block.comment;
+            token += isSameLine ? '!//' : '//';
+            finalize(true);
+            i++;
+            column++;
+        } else if (block === Block.comment && cur === '\n') {
+            block = Block.none;
+            finalize(false, true);
+        } else if (block === Block.none && cur + next === '/*') {
+            block = Block.multiComment;
+            finalize();
+            token = '/*';
+            finalize(true);
+            i++;
+            column++;
+        } else if (block === Block.multiComment && cur + next === '*/') {
+            block = Block.none;
+            finalize(false, true);
+            token = '*/';
+            finalize(true);
+            i++;
+            column++;
+        } else if (block === Block.none && cur === '\'') {
+            finalize();
+            token = cur;
+            block = Block.singleQuoteString;
+        } else if (block === Block.singleQuoteString && cur + next === '\\\'') {
+            token += '\'';
+            i++;
+        } else if (block === Block.singleQuoteString && cur === '\'') {
+            token += cur;
+            finalize();
+            block = Block.none;
+        } else if (block === Block.none && cur === '"') {
+            finalize();
+            token = cur;
+            block = Block.doubleQuoteString;
+        } else if (block === Block.doubleQuoteString && cur + next === '\\"') {
+            token += '"';
+            i++;
+        } else if (block === Block.doubleQuoteString && cur === '"') {
+            token += cur;
+            finalize();
+            block = Block.none;
+        } else if (block === Block.none && Symbol[cur]) {
+            finalize();
+            token = cur;
+            finalize(true);
+        } else if (block === Block.none && Empty[cur]) {
+            finalize();
+        } else {
+            token += cur;
         }
 
         if (block === Block.none && cur === '\n') {
@@ -113,16 +90,12 @@ export function tokenizer(source: string) {
         }
 
         if (cur === '\n') {
-            sameLine = false;
-            curLine++;
+            isSameLine = false;
+            line++;
         } else if (!Empty[cur]) {
-            sameLine = true;
+            isSameLine = true;
         }
     }
 
-    return {
-        tokens,
-        lines,
-        columns,
-    };
+    return tokenList;
 }

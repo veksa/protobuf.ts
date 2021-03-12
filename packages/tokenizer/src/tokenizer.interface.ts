@@ -5,3 +5,9 @@ export enum Block {
     singleQuoteString = 'singleQuoteString',
     doubleQuoteString = 'doubleQuoteString',
 }
+
+export interface IToken {
+    token: string;
+    line: number;
+    column: number;
+}
